@@ -1,11 +1,25 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../components/Home.vue';
+
+import AdminComponent from '../components/admin/AdminComponent.vue';
+import DashboardComponent from '../components/admin/partials/dashboard/DashboardComponent.vue';
+import CategoriesComponent from '../components/admin/partials/categories/CategoriesComponent.vue';
 
 const routes = [
     {
-        path: '/',
-        component: Home,
-        name: 'Home',
+        path: '/admin',
+        component: AdminComponent,
+        children: [
+            {
+                path: 'dashboard',
+                component: DashboardComponent,
+                name: 'dashboard',
+            },
+            {
+                path: 'categorias',
+                component: CategoriesComponent,
+                name: 'categories',
+            },
+        ]
     },
 ];
 

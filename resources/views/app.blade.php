@@ -9,7 +9,7 @@
 <body>
 
     <div id="app">
-        @yield('content')
+        <AdminComponent />
     </div>
 
     @vite('resources/js/main.js')

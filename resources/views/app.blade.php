@@ -9,7 +9,7 @@
 <body>
 
     <div id="app">
-        <AdminComponent />
+        <App />
     </div>
 
     @vite('resources/js/main.js')

@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Repositories\CategoryRepositoryInterface;
 
@@ -18,6 +19,6 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $categories = $this->model->orderBy('created_at', 'ASC')->get();
 
-        return $categories;
+        return CategoryResource::collection($categories);
     }
 }

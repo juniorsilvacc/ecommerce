@@ -1,13 +1,10 @@
 import { createStore } from 'vuex';
 
+import Categories from './modules/categories';
+
 const store = createStore({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  getters: {
+  modules: {
+    categories: Categories
   },
 });
 

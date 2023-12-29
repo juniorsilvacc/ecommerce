@@ -19,4 +19,11 @@ class CategoryService
 
         return $categories;
     }
+
+    public function getCategory(int $categoryId)
+    {
+        $category = $this->repository->getCategory($categoryId);
+
+        return $category;
+    }
 }

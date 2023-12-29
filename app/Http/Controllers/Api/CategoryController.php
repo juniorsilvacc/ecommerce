@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CategoryResource;
 use App\Services\CategoryService;
 
 class CategoryController extends Controller
@@ -18,6 +19,17 @@ class CategoryController extends Controller
     {
         $categories = $this->service->getAllCategories();
 
-        return $categories;
+        return CategoryResource::collection($categories);
+    }
+
+    public function show($categoryId)
+    {
+        $category = $this->service->getCategory($categoryId);
+
+        if (!$category) {
+            return response()->json(['message' => 'Categoria não encontrada'], 404);
+        }
+
+        return new CategoryResource($category);
     }
 }

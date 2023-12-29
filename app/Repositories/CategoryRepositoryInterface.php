@@ -9,4 +9,6 @@ interface CategoryRepositoryInterface
     public function getCategory(int $categoryId);
 
     public function createCategory(array $data);
+
+    public function updateCategory(array $data, int $categoryId);
 }

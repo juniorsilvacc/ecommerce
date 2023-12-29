@@ -40,4 +40,11 @@ class CategoryController extends Controller
 
         return new CategoryResource($newCategory);
     }
+
+    public function update(StoreUpdateCategory $request, $categoryId)
+    {
+        $category = $this->service->updateCategory($request->validated(), $categoryId);
+
+        return new CategoryResource($category);
+    }
 }

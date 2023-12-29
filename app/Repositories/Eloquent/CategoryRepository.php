@@ -34,4 +34,13 @@ class CategoryRepository implements CategoryRepositoryInterface
 
         return $newCategory;
     }
+
+    public function updateCategory(array $data, int $categoryId)
+    {
+        $category = $this->model->findOrFail($categoryId);
+
+        $category->update($data);
+
+        return $category;
+    }
 }

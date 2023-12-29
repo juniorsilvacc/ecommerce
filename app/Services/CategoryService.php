@@ -33,4 +33,11 @@ class CategoryService
 
         return $newCategory;
     }
+
+    public function updateCategory(array $data, int $categoryId)
+    {
+        $category = $this->repository->updateCategory($data, $categoryId);
+
+        return $category;
+    }
 }

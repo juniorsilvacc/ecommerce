@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
     // Categorias
+    Route::delete('/categories/{id}/delete', [CategoryController::class, 'destroy']);
     Route::put('/categories/{id}/update', [CategoryController::class, 'update']);
     Route::post('/categories/create', [CategoryController::class, 'store']);
     Route::get('/categories/{id}/details', [CategoryController::class, 'show']);

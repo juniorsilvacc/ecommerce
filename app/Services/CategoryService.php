@@ -40,4 +40,11 @@ class CategoryService
 
         return $category;
     }
+
+    public function destroyCategory(int $id)
+    {
+        $category = $this->repository->destroyCategory($id);
+
+        return $category;
+    }
 }

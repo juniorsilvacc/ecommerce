@@ -43,4 +43,15 @@ class CategoryRepository implements CategoryRepositoryInterface
 
         return $category;
     }
+
+    public function destroyCategory(int $id)
+    {
+        $category = $this->model->where('id', $id)->first();
+
+        if (!$category) {
+            return response()->json(['message' => 'Categoria não encontrada'], 404);
+        }
+
+        $category->delete();
+    }
 }

@@ -47,4 +47,9 @@ class CategoryController extends Controller
 
         return new CategoryResource($category);
     }
+
+    public function destroy($id)
+    {
+        return $this->service->destroyCategory($id);
+    }
 }

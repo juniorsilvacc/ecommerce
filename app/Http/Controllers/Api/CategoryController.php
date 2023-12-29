@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUpdateCategory;
 use App\Http\Resources\CategoryResource;
 use App\Services\CategoryService;
 
@@ -31,5 +32,12 @@ class CategoryController extends Controller
         }
 
         return new CategoryResource($category);
+    }
+
+    public function store(StoreUpdateCategory $request)
+    {
+        $newCategory = $this->service->createCategory($request->validated());
+
+        return new CategoryResource($newCategory);
     }
 }

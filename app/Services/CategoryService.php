@@ -26,4 +26,11 @@ class CategoryService
 
         return $category;
     }
+
+    public function createCategory(array $data)
+    {
+        $newCategory = $this->repository->createCategory($data);
+
+        return $newCategory;
+    }
 }

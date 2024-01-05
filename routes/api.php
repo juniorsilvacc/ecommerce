@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use Illuminate\Support\Facades\Route;
+
+Route::post('/auth', [AuthController::class, 'auth']);
 
 Route::prefix('v1')->group(function () {
     // Categorias

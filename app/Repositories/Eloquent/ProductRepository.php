@@ -23,7 +23,7 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function getProduct(int $productId)
     {
-        $product = $this->model->where('id', $productId)->first();
+        $product = $this->model->with('category')->find($productId);
 
         return $product;
     }
@@ -37,7 +37,7 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function updateProduct(array $data, int $productId)
     {
-        $product = $this->model->findOrFail($productId);
+        $product = $this->model->with('category')->findOrFail($productId);
 
         $product->update($data);
 

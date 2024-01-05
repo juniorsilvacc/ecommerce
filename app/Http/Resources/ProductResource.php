@@ -14,7 +14,6 @@ class ProductResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $imageUrl = urldecode($this->image);
         $priceFormated = 'R$ '.number_format($this->price, 2);
 
         return [
@@ -22,11 +21,8 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'price' => $priceFormated,
-            'image' => $this->image ? url($imageUrl) : null,
-            'category' => [
-                'name' => $this->category->name,
-                'description' => $this->category->description,
-            ],
+            'image' => $this->image ? $this->image : null,
+            'category' => new CategoryResource($this->whenLoaded('category')),
         ];
     }
 }

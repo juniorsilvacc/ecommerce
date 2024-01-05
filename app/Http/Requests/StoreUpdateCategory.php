@@ -26,7 +26,7 @@ class StoreUpdateCategory extends FormRequest
                 'required',
                 'min:3',
                 'max:255',
-                "unique:categories,id,{$this->id},id",
+                "unique:categories,name,{$this->id},id",
             ],
             'description' => [
                 'nullable',

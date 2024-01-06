@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -27,6 +28,17 @@ class AuthController extends Controller
         return response()->json([
             'token' => $token,
         ]);
+    }
+
+    public function register(RegisterRequest $request)
+    {
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return response()->json(['token' => $user->createToken('api')->plainTextToken]);
     }
 
     public function logout()

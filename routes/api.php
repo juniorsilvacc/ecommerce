@@ -6,8 +6,9 @@ use App\Http\Controllers\Api\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/auth', [AuthController::class, 'auth']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-Route::prefix('v1')->group(function () {
+Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     // Categorias
     Route::delete('/categories/{id}/delete', [CategoryController::class, 'destroy']);
     Route::put('/categories/{id}/update', [CategoryController::class, 'update']);

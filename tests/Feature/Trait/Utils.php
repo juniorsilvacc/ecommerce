@@ -6,9 +6,6 @@ use App\Models\User;
 
 trait Utils
 {
-    /**
-     * A basic feature test example.
-     */
     public function createUser()
     {
         $user = User::factory()->create();

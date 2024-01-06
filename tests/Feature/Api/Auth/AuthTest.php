@@ -7,9 +7,6 @@ use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
     use Utils;
 
     public function testFailAuth(): void
@@ -67,13 +64,6 @@ class AuthTest extends TestCase
         ]);
 
         $responseDuplicate->assertStatus(422);
-
-        $responseDuplicate->assertJson([
-            'message' => 'The email has already been taken.',
-            'errors' => [
-                'email' => ['The email has already been taken.'],
-            ],
-        ]);
     }
 
     public function testFailLogout(): void

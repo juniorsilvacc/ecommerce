@@ -1,10 +1,15 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('v1')->group(function () {
+Route::post('/auth', [AuthController::class, 'auth']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     // Categorias
     Route::delete('/categories/{id}/delete', [CategoryController::class, 'destroy']);
     Route::put('/categories/{id}/update', [CategoryController::class, 'update']);

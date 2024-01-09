@@ -57,9 +57,13 @@ class ProductController extends Controller
 
     public function update(StoreUpdateProduct $request, $productId)
     {
+        $data = $request->validated();
+
         $product = $this->service->getProduct($productId);
 
-        $data = $request->validated();
+        if (!$product) {
+            return response()->json(['message' => 'Produto não encontrado'], 404);
+        }
 
         // Método para manipular o upload da imagem
         $uploadedImage = $this->uploadImageService->handleImageUpload($request, $product->image);

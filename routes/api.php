@@ -9,7 +9,8 @@ Route::post('/auth', [AuthController::class, 'auth']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
+// Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
+Route::prefix('v1')->group(function () {
     // Categorias
     Route::delete('/categories/{id}/delete', [CategoryController::class, 'destroy']);
     Route::put('/categories/{id}/update', [CategoryController::class, 'update']);

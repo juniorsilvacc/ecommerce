@@ -168,6 +168,6 @@ class CategoryTest extends TestCase
 
         $response = $this->deleteJson("/api/v1/categories/{$category->id}/delete", [], $user);
 
-        $response->assertStatus(200); // Usando 204 para indicar uma exclusão bem-sucedida
+        $response->assertStatus(200);
     }
 }

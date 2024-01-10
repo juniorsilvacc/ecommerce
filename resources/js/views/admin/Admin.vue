@@ -2,7 +2,7 @@
     <div>
         <ul>
             <li>
-                <router-link :to="'/admin'">Dashboard</router-link>
+                <router-link :to="'/admin/dashboard'">Dashboard</router-link>
             </li>
             <li>
                 <router-link :to="'/admin/categories'">Categorias ({{totalCategories}})</router-link>

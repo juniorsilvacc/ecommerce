@@ -1,11 +1,11 @@
 <template>
     <div>
-        <ul>
-            <li>
-                <router-link :to="'/admin/dashboard'">Dashboard</router-link>
+        <ul class="nav bg-dark">
+            <li class="nav-item">
+                <router-link :to="'/admin/dashboard'" class="nav-link">Dashboard</router-link>
             </li>
             <li>
-                <router-link :to="'/admin/categories'">Categorias ({{totalCategories}})</router-link>
+                <router-link :to="'/admin/categories'" class="nav-link">Categorias ({{totalCategories}})</router-link>
             </li>
         </ul>
 

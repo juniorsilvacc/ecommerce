@@ -30,12 +30,25 @@ export default {
                     // Chama a mutação 'LOAD_CATEGORIES' com os dados da resposta da API
                     context.commit('LOAD_CATEGORIES', response)
                 })
-                .catch(errors => {
-                    console.log(errors)
+                .catch(error => {
+                    console.log(error)
                 })
                 .finally(() => {
                     context.commit('CHANGE_PRELOADER', false);
                 })
+        },
+
+        storeCategory (context, params) {
+            context.commit('CHANGE_PRELOADER', true);
+
+            return new Promise((resolve, reject) => {
+                axios.post('/api/v1/categories/create', params)
+                    .then(response => resolve())
+                    .catch(error => reject(error))
+                    .finally(() => {
+                        context.commit('CHANGE_PRELOADER', false);
+                    })
+            })
         }
     },
     // Getters são funções para acessar o estado em componentes Vue

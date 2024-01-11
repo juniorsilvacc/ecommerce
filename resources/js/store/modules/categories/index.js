@@ -38,18 +38,31 @@ export default {
                 })
         },
 
-        storeCategory (context, params) {
+        loadCategory (context, id) {
             context.commit('CHANGE_PRELOADER', true);
 
             return new Promise((resolve, reject) => {
-                axios.post('/api/v1/categories/create', params)
-                    .then(response => resolve())
+                axios.get(`/api/v1/categories/${id}/details`)
+                    .then(response => resolve(response.data))
                     .catch(error => reject(error))
                     .finally(() => {
                         context.commit('CHANGE_PRELOADER', false);
                     })
             })
-        }
+        },
+
+        storeCategory (context, params) {
+            context.commit('CHANGE_PRELOADER', true);
+
+            return new Promise((resolve, reject) => {
+                axios.post('/api/v1/categories/create', params)
+                    .then(response => resolve(response.data))
+                    .catch(error => reject(error))
+                    .finally(() => {
+                        context.commit('CHANGE_PRELOADER', false);
+                    })
+            })
+        },
     },
     // Getters são funções para acessar o estado em componentes Vue
     getters: {

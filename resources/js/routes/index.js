@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import Admin from '../views/admin/Admin.vue';
-import DashboardComponent from '../components/partials/dashboard/DashboardComponent.vue';
-import CategoriesComponent from '../components/partials/categories/CategoriesComponent.vue';
-import AddCategoryComponent from '../components/partials/categories/AddCategoryComponent.vue';
+import DashboardComponent from '../components/pages/dashboard/DashboardComponent.vue';
+import CategoriesComponent from '../components/pages/categories/CategoriesComponent.vue';
+import AddCategoryComponent from '../components/pages/categories/AddCategoryComponent.vue';
+import EditCategoryComponent from '../components/pages/categories/EditCategoryComponent.vue';
 
 const routes = [
     {
@@ -24,6 +25,12 @@ const routes = [
         path: '/admin/categories/create',
         component: AddCategoryComponent,
         name: 'admin.categories.create',
+    },
+    {
+        path: '/admin/categories/:id/edit',
+        component: EditCategoryComponent,
+        name: 'admin.categories.edit',
+        props: true,
     },
 ];
 

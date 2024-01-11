@@ -33,13 +33,17 @@ export default {
     props: {
         category: {
             type: Object,
-            default: () => ({ name: "", description: "" }),
+            default: () => ({
+                id: "",
+                name: "",
+                description: "",
+            }),
         },
         updating: {
             require: false,
             type: Boolean,
             default: false,
-        }
+        },
     },
     setup(props) {
         const store = useStore();
@@ -47,7 +51,7 @@ export default {
 
         const onSubmit = async () => {
             try {
-                if(props.updating) {
+                if (props.updating) {
                     await store.dispatch("updateCategory", props.category);
                 } else {
                     await store.dispatch("storeCategory", props.category);

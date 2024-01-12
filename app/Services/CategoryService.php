@@ -13,9 +13,9 @@ class CategoryService
         $this->repository = $repository;
     }
 
-    public function getAllCategories()
+    public function getAllCategories($name = null)
     {
-        $categories = $this->repository->getAllCategories();
+        $categories = $this->repository->getAllCategories($name);
 
         return $categories;
     }

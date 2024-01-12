@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateCategory;
 use App\Http\Resources\CategoryResource;
 use App\Services\CategoryService;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -16,9 +17,11 @@ class CategoryController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $categories = $this->service->getAllCategories();
+        $name = $request->input('name');
+
+        $categories = $this->service->getAllCategories($name);
 
         return CategoryResource::collection($categories);
     }

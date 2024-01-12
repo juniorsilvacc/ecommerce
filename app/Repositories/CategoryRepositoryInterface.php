@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 interface CategoryRepositoryInterface
 {
-    public function getAllCategories();
+    public function getAllCategories($name = null);
 
     public function getCategory(int $categoryId);
 

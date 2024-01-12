@@ -76,6 +76,22 @@ export default {
                     })
             })
         },
+
+        destroyCategory (context, categoryId) {
+            context.commit('CHANGE_PRELOADER', true);
+
+            return new Promise((resolve, reject) => {
+                axios.delete(`/api/v1/categories/${categoryId}/delete`)
+                    .then(response => {
+                        context.dispatch('loadCategories'); // Se necessário, recarregue a lista de categorias após a exclusão
+                        resolve(response.data);
+                    })
+                    .catch(error => reject(error))
+                    .finally(() => {
+                        context.commit('CHANGE_PRELOADER', false);
+                    });
+            });
+        }
     },
     // Getters são funções para acessar o estado em componentes Vue
     getters: {

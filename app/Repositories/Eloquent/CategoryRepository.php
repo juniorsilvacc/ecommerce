@@ -14,9 +14,15 @@ class CategoryRepository implements CategoryRepositoryInterface
         $this->model = $category;
     }
 
-    public function getAllCategories()
+    public function getAllCategories($name = null, $perPage = 10)
     {
-        $categories = $this->model->orderBy('created_at', 'ASC')->get();
+        $query = $this->model->orderBy('created_at', 'ASC');
+
+        if ($name !== null) {
+            $query->where('name', 'LIKE', "%{$name}%");
+        }
+
+        $categories = $query->paginate($perPage);
 
         return $categories;
     }

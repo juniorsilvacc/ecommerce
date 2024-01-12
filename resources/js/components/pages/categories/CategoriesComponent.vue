@@ -32,10 +32,22 @@
                         <a
                             href=""
                             class="btn btn-danger"
-                            @click.prevent="destroy(category)"
+                            @click.prevent="confirmDestroy(category)"
                         >
                             <i class="fas fa-trash-alt"></i>
                         </a>
+
+                        <div
+                            v-if="showConfirmationModal"
+                            class="confirmation-modal"
+                        >
+                            <p>
+                                Você tem certeza de que deseja excluir a
+                                categoria "{{ categoryToDelete.name }}"?
+                            </p>
+                            <button @click="cancelDelete">Cancelar</button>
+                            <button @click="confirmDelete">Confirmar</button>
+                        </div>
                     </td>
                 </tr>
             </tbody>
@@ -47,6 +59,12 @@
 import { notify } from "@kyvg/vue3-notification";
 
 export default {
+    data() {
+        return {
+            showConfirmationModal: false,
+            categoryToDelete: null,
+        };
+    },
     created() {
         this.$store.dispatch("loadCategories");
     },
@@ -56,14 +74,35 @@ export default {
         },
     },
     methods: {
+        confirmDestroy(category) {
+            this.categoryToDelete = category;
+            this.showConfirmationModal = true;
+        },
+
+        cancelDelete() {
+            this.showConfirmationModal = false;
+            this.categoryToDelete = null;
+        },
+
+        confirmDelete() {
+            this.destroy(this.categoryToDelete);
+            this.showConfirmationModal = false;
+            this.categoryToDelete = null;
+        },
         destroy(category) {
             this.$store
                 .dispatch("destroyCategory", category.id)
                 .then(() => {
-                    notify({ title: `Sucesso ao deletar a categoria ${category.name}`, type: "success" });
+                    notify({
+                        title: `Sucesso ao deletar a categoria ${category.name}`,
+                        type: "success",
+                    });
                 })
-                .catch(error => {
-                    notify({ title: "Error ao deletar categoria", type: "error" });
+                .catch((error) => {
+                    notify({
+                        title: "Error ao deletar categoria",
+                        type: "error",
+                    });
                 });
         },
     },
@@ -76,5 +115,40 @@ export default {
 }
 .edit {
     margin-right: 10px;
+}
+
+.confirmation-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(34, 34, 34, 0.7);
+  padding: 20px;
+  z-index: 1000;
+  width: 300px;
+  border-radius: 8px;
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+}
+
+.confirmation-modal p {
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.confirmation-modal button {
+  background-color: #f55964;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.confirmation-modal button:hover {
+  background-color: #d22c38;
 }
 </style>

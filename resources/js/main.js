@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 
+import Notifications from '@kyvg/vue3-notification'
 import App from './App.vue';
 import router from './routes';
 import store from './store';
@@ -10,4 +11,5 @@ import 'bootstrap/dist/js/bootstrap.bundle'
 createApp(App)
     .use(router)
     .use(store)
+    .use(Notifications)
     .mount('#app');

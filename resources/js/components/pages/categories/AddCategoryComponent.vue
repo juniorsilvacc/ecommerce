@@ -4,7 +4,7 @@
             <h1>Adicionar nova categoria</h1>
         </div>
 
-        <FormCategoryComponent :category="category" />
+        <FormCategoryComponent :category="category"/>
     </div>
 </template>
 
@@ -22,7 +22,7 @@ export default {
                 description: "",
             },
         };
-    },
+    }
 };
 </script>
 

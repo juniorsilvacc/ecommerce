@@ -1,4 +1,5 @@
 <template>
+    <notifications />
     <preloader/>
     <router-view/>
 </template>
@@ -12,3 +13,9 @@
         }
     }
 </script>
+
+<style>
+.vue-notification {
+  margin-top: 20px;
+}
+</style>

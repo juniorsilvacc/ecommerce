@@ -2,11 +2,20 @@
     <div class="container">
         <h1>Listagem de Categorias</h1>
 
-        <router-link
-            :to="{ name: 'admin.categories.create' }"
-            class="btn btn-success"
-            >Cadastrar</router-link
-        >
+        <div class="row">
+            <div class="col">
+                <div class="d-flex justify-content-between">
+                    <SearchCategoryComponent @searchCategory="search" />
+
+                    <router-link
+                        :to="{ name: 'admin.categories.create' }"
+                        class="btn btn-success btn-custom"
+                    >
+                        Cadastrar
+                    </router-link>
+                </div>
+            </div>
+        </div>
 
         <table class="table table-dark">
             <thead>
@@ -36,18 +45,6 @@
                         >
                             <i class="fas fa-trash-alt"></i>
                         </a>
-
-                        <div
-                            v-if="showConfirmationModal"
-                            class="confirmation-modal"
-                        >
-                            <p>
-                                Você tem certeza de que deseja excluir a
-                                categoria "{{ categoryToDelete.name }}"?
-                            </p>
-                            <button @click="cancelDelete">Cancelar</button>
-                            <button @click="confirmDelete">Confirmar</button>
-                        </div>
                     </td>
                 </tr>
             </tbody>
@@ -57,16 +54,19 @@
 
 <script>
 import { notify } from "@kyvg/vue3-notification";
+import SearchCategoryComponent from "./partials/SearchCategoryComponent.vue";
 
 export default {
+    components: {
+        SearchCategoryComponent,
+    },
     data() {
         return {
-            showConfirmationModal: false,
-            categoryToDelete: null,
+            name: "",
         };
     },
     created() {
-        this.$store.dispatch("loadCategories");
+        this.$store.dispatch("loadCategories", { name: this.name });
     },
     computed: {
         categories() {
@@ -75,20 +75,15 @@ export default {
     },
     methods: {
         confirmDestroy(category) {
-            this.categoryToDelete = category;
-            this.showConfirmationModal = true;
+            if (
+                window.confirm(
+                    `Tem certeza de que deseja destruir a categoria ${category.name}?`
+                )
+            ) {
+                this.destroy(category);
+            }
         },
 
-        cancelDelete() {
-            this.showConfirmationModal = false;
-            this.categoryToDelete = null;
-        },
-
-        confirmDelete() {
-            this.destroy(this.categoryToDelete);
-            this.showConfirmationModal = false;
-            this.categoryToDelete = null;
-        },
         destroy(category) {
             this.$store
                 .dispatch("destroyCategory", category.id)
@@ -105,6 +100,10 @@ export default {
                     });
                 });
         },
+
+        search(filter) {
+            this.$store.dispatch("loadCategories", { name: filter });
+        },
     },
 };
 </script>
@@ -116,39 +115,7 @@ export default {
 .edit {
     margin-right: 10px;
 }
-
-.confirmation-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(34, 34, 34, 0.7);
-  padding: 20px;
-  z-index: 1000;
-  width: 300px;
-  border-radius: 8px;
-  text-align: center;
-  font-family: 'Arial', sans-serif;
-}
-
-.confirmation-modal p {
-  margin-bottom: 20px;
-  color: #fff;
-}
-
-.confirmation-modal button {
-  background-color: #f55964;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  margin: 0 10px;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 14px;
-  transition: background-color 0.3s;
-}
-
-.confirmation-modal button:hover {
-  background-color: #d22c38;
+.btn-custom {
+    height: 38px; /* Ajuste a altura conforme necessário */
 }
 </style>

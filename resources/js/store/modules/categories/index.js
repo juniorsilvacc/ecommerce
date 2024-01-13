@@ -20,12 +20,12 @@ export default {
     // As ações são funções assíncronas que podem chamar mutações
     actions: {
         // Uma ação chamada 'loadCategories', que recebe o contexto como parâmetro
-        loadCategories (context) {
+        loadCategories (context, params) {
             context.commit('CHANGE_PRELOADER', true);
 
 
             // Faz uma requisição GET para a API de categorias
-            axios.get('/api/v1/categories')
+            axios.get('/api/v1/categories', { params })
                 .then(response => {
                     // Chama a mutação 'LOAD_CATEGORIES' com os dados da resposta da API
                     context.commit('LOAD_CATEGORIES', response)

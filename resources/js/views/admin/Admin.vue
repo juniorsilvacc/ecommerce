@@ -2,10 +2,13 @@
     <div>
         <ul class="nav bg-dark">
             <li class="nav-item">
-                <router-link :to="'/admin/dashboard'" class="nav-link">Dashboard</router-link>
+                <router-link :to="{name: 'admin.dashboard'}" class="nav-link">Dashboard</router-link>
             </li>
             <li>
-                <router-link :to="'/admin/categories'" class="nav-link">Categorias ({{totalCategories}})</router-link>
+                <router-link :to="{name: 'admin.categories'}" class="nav-link">Categorias ({{totalCategories}})</router-link>
+            </li>
+            <li>
+                <router-link :to="{name: 'admin.products'}" class="nav-link">Produtos ({{totalProducts}})</router-link>
             </li>
         </ul>
 
@@ -18,6 +21,9 @@
         computed: {
             totalCategories () {
                 return this.$store.state.categories.items.data.length;
+            },
+            totalProducts () {
+                return this.$store.state.products.items.data.length;
             }
         }
     }

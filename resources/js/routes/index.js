@@ -1,21 +1,30 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import Admin from '../views/admin/Admin.vue';
+
+// Dashboard
 import DashboardComponent from '../components/pages/dashboard/DashboardComponent.vue';
+
+// Categories
 import CategoriesComponent from '../components/pages/categories/CategoriesComponent.vue';
 import AddCategoryComponent from '../components/pages/categories/AddCategoryComponent.vue';
 import EditCategoryComponent from '../components/pages/categories/EditCategoryComponent.vue';
+
+// Products
+import ProductsComponent from '../components/pages/products/ProductsComponent.vue';
 
 const routes = [
     {
         path: '/',
         component: Admin,
     },
+
     {
         path: '/admin/dashboard',
         component: DashboardComponent,
         name: 'admin.dashboard',
     },
+
     {
         path: '/admin/categories',
         component: CategoriesComponent,
@@ -36,6 +45,12 @@ const routes = [
         path: '/admin/categories/:id/delete',
         name: 'admin.categories.delete',
         props: true,
+    },
+
+    {
+        path: '/admin/products',
+        component: ProductsComponent,
+        name: 'admin.products',
     },
 ];
 

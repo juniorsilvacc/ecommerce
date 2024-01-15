@@ -109,13 +109,4 @@ export default {
 </script>
 
 <style scoped>
-.acctions {
-    display: flex;
-}
-.edit {
-    margin-right: 10px;
-}
-.btn-custom {
-    height: 38px; /* Ajuste a altura conforme necessário */
-}
 </style>

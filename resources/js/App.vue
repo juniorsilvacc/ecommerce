@@ -21,4 +21,16 @@
 .vue-notification {
   margin-top: 20px;
 }
+
+.acctions {
+    display: flex;
+}
+
+.edit {
+    margin-right: 10px;
+}
+
+.btn-custom {
+    height: 38px; /* Ajuste a altura conforme necessário */
+}
 </style>

@@ -35,7 +35,7 @@
                                 name: 'admin.categories.edit',
                                 params: { id: category.id },
                             }"
-                            class="btn btn-warning edit"
+                            class="btn btn-warning primary-btn-acction"
                             ><i class="fas fa-edit"></i
                         ></router-link>
                         <a

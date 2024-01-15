@@ -12,6 +12,7 @@ import EditCategoryComponent from '../components/pages/categories/EditCategoryCo
 
 // Products
 import ProductsComponent from '../components/pages/products/ProductsComponent.vue';
+import ProductDetailComponent from '../components/pages/products/ProductDetailComponent.vue';
 
 const routes = [
     {
@@ -51,6 +52,12 @@ const routes = [
         path: '/admin/products',
         component: ProductsComponent,
         name: 'admin.products',
+    },
+    {
+        path: '/admin/products/:id/details',
+        component: ProductDetailComponent,
+        name: 'admin.product.datail',
+        props: true,
     },
 ];
 

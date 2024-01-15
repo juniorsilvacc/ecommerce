@@ -19,16 +19,17 @@
                     <td class="acctions">
                         <router-link
                             :to="{
-                                name: '',
+                                name: 'admin.product.datail',
+                                params: { id: product.id }
                             }"
-                            class="btn btn-light edit"
+                            class="btn btn-light primary-btn-acction"
                             ><i class="fas fa-eye"></i
                         ></router-link>
                         <router-link
                             :to="{
                                 name: '',
                             }"
-                            class="btn btn-warning edit"
+                            class="btn btn-warning"
                             ><i class="fas fa-edit"></i
                         ></router-link>
                     </td>

@@ -26,7 +26,7 @@
     display: flex;
 }
 
-.edit {
+.primary-btn-acction {
     margin-right: 10px;
 }
 

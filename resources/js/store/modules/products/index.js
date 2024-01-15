@@ -20,11 +20,23 @@ export default {
                     context.commit('LOAD_PRODUCTS', response)
                 })
                 .catch(error => {
-                    console.log(error)
+                    throw error;
                 })
                 .finally(() => {
                     context.commit('CHANGE_PRELOADER', false);
                 })
+        },
+        async loadProduct(context, id) {
+            context.commit('CHANGE_PRELOADER', true);
+
+            try {
+                const response = await axios.get(`/api/v1/products/${id}/details`);
+                context.commit('CHANGE_PRELOADER', false);
+                return response.data;
+            } catch (error) {
+                context.commit('CHANGE_PRELOADER', false);
+                throw error;
+            }
         }
     },
     getters: {

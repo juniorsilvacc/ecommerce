@@ -1,34 +1,13 @@
 <template>
     <div>
-        <ul class="nav bg-dark">
-            <li class="nav-item">
-                <router-link :to="{name: 'admin.dashboard'}" class="nav-link">Dashboard</router-link>
-            </li>
-            <li>
-                <router-link :to="{name: 'admin.categories'}" class="nav-link">Categorias ({{totalCategories}})</router-link>
-            </li>
-            <li>
-                <router-link :to="{name: 'admin.products'}" class="nav-link">Produtos ({{totalProducts}})</router-link>
-            </li>
-        </ul>
-
-        <router-view></router-view>
+        <h1>Inicio</h1>
     </div>
 </template>
 
 <script>
-    export default {
-        computed: {
-            totalCategories () {
-                return this.$store.state.categories.items.data.length;
-            },
-            totalProducts () {
-                return this.$store.state.products.items.data.length;
-            }
-        }
-    }
+export default {
+}
 </script>
 
-<style>
-
+<style scoped>
 </style>

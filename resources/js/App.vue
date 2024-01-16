@@ -1,15 +1,17 @@
 <template>
     <notifications />
+    <headerComponent />
     <preloader/>
-    <router-view/>
 </template>
 
 <script>
     import preloader from './components/common/PreloaderComponent.vue';
+    import headerComponent from './components/common/HeaderComponent.vue';
 
     export default {
         components: {
-            preloader
+            preloader,
+            headerComponent
         }
     }
 </script>
@@ -31,6 +33,6 @@
 }
 
 .btn-custom {
-    height: 38px; /* Ajuste a altura conforme necessário */
+    height: 38px;
 }
 </style>

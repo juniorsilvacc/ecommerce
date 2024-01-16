@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUpdateProduct;
 use App\Http\Resources\ProductResource;
 use App\Services\ProductService;
 use App\Services\UploadImageService;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -21,9 +22,11 @@ class ProductController extends Controller
         $this->uploadImageService = $uploadImage;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $products = $this->service->getAllProducts();
+        $name = $request->input('name');
+
+        $products = $this->service->getAllProducts($name);
 
         return ProductResource::collection($products);
     }

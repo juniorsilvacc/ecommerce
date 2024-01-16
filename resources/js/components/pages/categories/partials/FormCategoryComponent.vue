@@ -91,7 +91,7 @@ export default {
                 }
 
                 notify({
-                    title: "Falha ao processar categoria",
+                    title: "Falha ao Processar Categoria",
                     text: msgError,
                     type: "error",
                 });

@@ -14,9 +14,15 @@ class ProductRepository implements ProductRepositoryInterface
         $this->model = $product;
     }
 
-    public function getAllProducts()
+    public function getAllProducts($name = null, $perPage = 10)
     {
-        $products = $this->model->orderBy('created_at', 'ASC')->get();
+        $query = $this->model->with('category')->orderBy('created_at', 'ASC');
+
+        if ($name !== null) {
+            $query->where('name', 'LIKE', "%{$name}%");
+        }
+
+        $products = $query->paginate($perPage);
 
         return $products;
     }

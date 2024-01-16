@@ -28,10 +28,10 @@ export default {
             axios.get('/api/v1/categories', { params })
                 .then(response => {
                     // Chama a mutação 'LOAD_CATEGORIES' com os dados da resposta da API
-                    context.commit('LOAD_CATEGORIES', response)
+                    context.commit('LOAD_CATEGORIES', response);
                 })
                 .catch(error => {
-                    console.log(error)
+                    console.log(error);
                 })
                 .finally(() => {
                     context.commit('CHANGE_PRELOADER', false);

@@ -13,9 +13,9 @@ class ProductService
         $this->repository = $repository;
     }
 
-    public function getAllProducts()
+    public function getAllProducts($name = null)
     {
-        $products = $this->repository->getAllProducts();
+        $products = $this->repository->getAllProducts($name);
 
         return $products;
     }

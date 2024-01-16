@@ -13,6 +13,7 @@ import EditCategoryComponent from '../components/pages/categories/EditCategoryCo
 // Products
 import ProductsComponent from '../components/pages/products/ProductsComponent.vue';
 import ProductDetailComponent from '../components/pages/products/ProductDetailComponent.vue';
+import AddProductComponent from '../components/pages/products/AddProductComponent.vue';
 
 const routes = [
     {
@@ -58,6 +59,11 @@ const routes = [
         component: ProductDetailComponent,
         name: 'admin.product.datail',
         props: true,
+    },
+    {
+        path: '/admin/products/create',
+        component: AddProductComponent,
+        name: 'admin.product.create',
     },
 ];
 

@@ -1,6 +1,10 @@
 <template>
     <div>
-        <form class="form" @submit.prevent="onSubmit">
+        <form
+            class="form"
+            @submit.prevent="onSubmit"
+            enctype="multipart/form-data"
+        >
             <div class="form-group mb-3">
                 <label for="name" class="form-label">Nome:</label>
                 <input
@@ -36,11 +40,13 @@
             <div class="form-group mb-3">
                 <label for="category" class="form-label">Categoria:</label>
                 <select
-                    v-model="product.category"
+                    v-model="product.category_id"
                     class="form-control"
-                    id="category"
+                    id="category_id"
+                    name="category_id"
                     required
                 >
+                    <option value="">Selecione a Categoria</option>
                     <option
                         v-for="category in categories"
                         :key="category.id"
@@ -68,56 +74,64 @@
 </template>
 
 <script>
-import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import axios from "axios";
 import { notify } from "@kyvg/vue3-notification";
 
 export default {
-    props: {
-        product: {
-            type: Object,
-            default: () => ({
-                id: "",
+    data() {
+        return {
+            product: {
                 name: "",
-                price: "",
+                price: null,
                 description: "",
-                category: "",
-                image: "",
-            }),
-        },
-        updating: {
-            require: false,
-            type: Boolean,
-            default: false,
-        },
+                category_id: "",
+                image: null,
+            },
+            categories: [],
+        };
+    },
+    mounted() {
+        // Chame a função para carregar as categorias quando o componente for montado
+        this.loadCategories();
     },
     methods: {
-        handleImageUpload(event) {
-            const fileInput = event.target;
-            const file = fileInput.files?.[0];
+        async loadCategories() {
+            // Requisição HTTP GET para obter as categorias
+            const response = await axios.get("/api/v1/categories");
 
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    this.product.image = reader.result;
-                };
-                reader.readAsDataURL(file);
-            }
+            // Atribua os dados de categorias à variável categories
+            this.categories = response.data.data;
         },
-    },
-    setup(props) {
-        const store = useStore();
-        const router = useRouter();
-
-        const onSubmit = async () => {
+        async onSubmit() {
             try {
-                await store.dispatch("storeProduct", props.product);
+                const formData = new FormData();
 
-                router.push({ name: "admin.products" });
+                // Adiciona os campos do produto ao FormData
+                formData.append("name", this.product.name);
+                formData.append("price", this.product.price);
+                formData.append("description", this.product.description);
+                formData.append("category_id", this.product.category_id);
+
+                // Adiciona a imagem ao FormData (se estiver presente)
+                if (this.product.image) {
+                    formData.append("image", this.product.image);
+                }
+
+                // Envia o FormData para a ação storeProduct
+                await this.$store.dispatch("storeProduct", formData);
+
+                // Limpar o formulário ou realizar outras ações após o envio bem-sucedido
+                this.product = {
+                    name: "",
+                    price: null,
+                    description: "",
+                    category_id: "",
+                    image: null,
+                };
 
                 notify({
                     title: "Produto",
-                    text: "Produto Adicionada Com Sucesso",
+                    text: "Produto Adicionado Com Sucesso",
                     type: "success",
                 });
             } catch (error) {
@@ -126,14 +140,16 @@ export default {
                 if (error.response && error.response.status === 422) {
                     const validationErrors = error.response.data.errors;
 
-                    const formattedErrors = Object.values(validationErrors)
-                        .flat()
+                    const formattedErrors = Object.entries(validationErrors)
+                        .map(
+                            ([field, messages]) =>
+                                `${field}: ${messages.join(", ")}`
+                        )
                         .join(", ");
 
-                    msgError = `${formattedErrors}`;
+                    msgError = `Erros de validação: ${formattedErrors}`;
                 } else if (error.response && error.response.status === 404) {
-                    msgError = "Produto Não Encontrada";
-                    router.push({ name: "admin.products" });
+                    msgError = "Produto Não Encontrado";
                 }
 
                 notify({
@@ -142,11 +158,14 @@ export default {
                     type: "error",
                 });
             }
-        };
+        },
+        handleImageUpload(event) {
+            const file = event.target.files[0];
 
-        return {
-            onSubmit,
-        };
+            if (file) {
+                this.product.image = file;
+            }
+        },
     },
 };
 </script>

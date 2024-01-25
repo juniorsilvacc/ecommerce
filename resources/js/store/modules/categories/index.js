@@ -14,28 +14,23 @@ export default {
         // Uma mutação chamada 'LOAD_CATEGORIES', que recebe o estado e as categorias como parâmetros
         LOAD_CATEGORIES (state, categories) {
             // Atualiza a propriedade 'items' do estado com os dados recebidos
-            state.items = categories.data;
+            state.items = categories;
         }
     },
     // As ações são funções assíncronas que podem chamar mutações
     actions: {
-        // Uma ação chamada 'loadCategories', que recebe o contexto como parâmetro
-        loadCategories (context, params) {
+        async loadCategories (context, params) {
             context.commit('CHANGE_PRELOADER', true);
 
-
-            // Faz uma requisição GET para a API de categorias
-            axios.get('/api/v1/categories', { params })
-                .then(response => {
-                    // Chama a mutação 'LOAD_CATEGORIES' com os dados da resposta da API
-                    context.commit('LOAD_CATEGORIES', response);
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-                .finally(() => {
-                    context.commit('CHANGE_PRELOADER', false);
-                })
+            try {
+                const response = await axios.get('/api/v1/categories', { params });
+                context.commit('CHANGE_PRELOADER', false);
+                context.commit('LOAD_CATEGORIES', response.data);
+                return response;
+            } catch (error) {
+                context.commit('CHANGE_PRELOADER', false);
+                throw error;
+            }
         },
 
         loadCategory (context, id) {

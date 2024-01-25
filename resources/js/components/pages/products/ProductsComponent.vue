@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" v-if="products && products.meta">
         <h1>Listagem de Produtos</h1>
 
         <div class="row">
@@ -76,7 +76,6 @@
 </template>
 
 <script>
-import { notify } from "@kyvg/vue3-notification";
 import SearchProductComponent from "./partials/SearchProductComponent.vue";
 
 export default {
@@ -103,7 +102,7 @@ export default {
         },
         paginate(page) {
             // Verifica se o número da página está fora dos limites válidos, Retorna se for válido
-            if (page < 1 || page > this.products.last_page) {
+            if (page < 1 || page > this.products.meta.last_page) {
                 return;
             }
             // Atualiza a variável de estado da página atual no componente
@@ -111,10 +110,11 @@ export default {
 
             // Dispara a ação para carregar os produtos da página selecionada
             this.$store.dispatch("loadProducts", { name: this.name, page });
-        },
+        }
     },
 };
 </script>
 
 <style scoped>
+
 </style>

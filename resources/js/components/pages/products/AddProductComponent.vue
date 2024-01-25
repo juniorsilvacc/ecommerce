@@ -4,7 +4,7 @@
             <h1>Adicionar Novo Produto</h1>
         </div>
 
-        <FormProductComponent :product="product"/>
+        <FormProductComponent :product="product" :categories="categories" />
     </div>
 </template>
 
@@ -15,12 +15,16 @@ export default {
     components: {
         FormProductComponent,
     },
-    data() {
+    data() { // Inicialização do object product
         return {
             product: {
                 name: "",
                 description: "",
+                category_id: null,
+                price: null,
+                image: new FormData()
             },
+            categories: []
         };
     }
 };

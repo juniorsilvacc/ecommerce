@@ -68,7 +68,11 @@
                 />
             </div>
 
-            <button type="submit" class="btn btn-primary">Enviar</button>
+            <input type="hidden" name="_method" value="PUT" />
+
+            <button type="submit" class="btn btn-primary">
+                {{ updating ? "Atualizar" : "Enviar" }}
+            </button>
         </form>
     </div>
 </template>
@@ -78,86 +82,107 @@ import axios from "axios";
 import { notify } from "@kyvg/vue3-notification";
 
 export default {
-    data() {
-        return {
-            product: {
+    props: {
+        product: {
+            type: Object,
+            default: () => ({
+                id: "",
                 name: "",
-                price: null,
                 description: "",
+                price: null,
                 category_id: "",
                 image: null,
-            },
+            }),
+        },
+        updating: {
+            required: false,
+            type: Boolean,
+            default: false,
+        },
+    },
+    data() {
+        return {
             categories: [],
+            errorMessages: [],
+            isSubmitting: false,
         };
     },
     mounted() {
-        // Chame a função para carregar as categorias quando o componente for montado
         this.loadCategories();
     },
     methods: {
         async loadCategories() {
-            // Requisição HTTP GET para obter as categorias
             const response = await axios.get("/api/v1/categories");
 
-            // Atribua os dados de categorias à variável categories
             this.categories = response.data.data;
         },
         async onSubmit() {
             try {
-                const formData = new FormData();
 
-                // Adiciona os campos do produto ao FormData
+                this.isSubmitting = true;
+                this.errorMessages = [];
+
+                if (this.updating) {
+                    await this.createOrUpdateProduct('updateProduct', 'Produto Atualizado Com Sucesso');
+                } else {
+                    await this.createOrUpdateProduct('storeProduct', 'Produto Adicionado Com Sucesso');
+                }
+            } catch (error) {
+                this.handleErrors(error);
+            }
+        },
+        async createOrUpdateProduct(action, successMessage) {
+            try {
+                const formData = new FormData();
+                const isUpdate = this.updating;
+
+                // Campos formData
                 formData.append("name", this.product.name);
                 formData.append("price", this.product.price);
                 formData.append("description", this.product.description);
                 formData.append("category_id", this.product.category_id);
 
-                // Adiciona a imagem ao FormData (se estiver presente)
+                // Campos específicos para atualização
+                if (isUpdate) {
+                    formData.append("id", this.product.id);
+                    formData.append("_method", "PUT");
+                }
+
+                // Adicione a imagem se houver
                 if (this.product.image) {
                     formData.append("image", this.product.image);
                 }
 
-                // Envia o FormData para a ação storeProduct
-                await this.$store.dispatch("storeProduct", formData);
+                console.log("FormData:", formData);
 
-                // Limpar o formulário ou realizar outras ações após o envio bem-sucedido
-                this.product = {
-                    name: "",
-                    price: null,
-                    description: "",
-                    category_id: "",
-                    image: null,
-                };
+                // Despache a ação
+                await this.$store.dispatch(action, { productId: this.product.id, data: formData });
 
                 notify({
                     title: "Produto",
-                    text: "Produto Adicionado Com Sucesso",
+                    text: successMessage,
                     type: "success",
                 });
             } catch (error) {
-                let msgError = "Falha na Requisição";
-
-                if (error.response && error.response.status === 422) {
-                    const validationErrors = error.response.data.errors;
-
-                    const formattedErrors = Object.entries(validationErrors)
-                        .map(
-                            ([field, messages]) =>
-                                `${field}: ${messages.join(", ")}`
-                        )
-                        .join(", ");
-
-                    msgError = `Erros de validação: ${formattedErrors}`;
-                } else if (error.response && error.response.status === 404) {
-                    msgError = "Produto Não Encontrado";
-                }
-
-                notify({
-                    title: "Falha ao Processar Produto",
-                    text: msgError,
-                    type: "error",
-                });
+                this.handleErrors(error);
             }
+        },
+        handleErrors(error) {
+            let messageError = "Falha na Requisição";
+
+            if (error.response && error.response.status === 422) {
+                const validationErrors = error.response.data.errors;
+                this.errorMessages = Object.entries(validationErrors)
+                    .map(([field, messages]) => `${field}: ${messages.join(", ")}`);
+            } else {
+                this.errorMessages = ["Erro desconhecido ao processar a solicitação."];
+            }
+
+            notify({
+                title: "Falha ao Processar Produto",
+                text: messageError,
+                type: "error",
+            });
         },
         handleImageUpload(event) {
             const file = event.target.files[0];

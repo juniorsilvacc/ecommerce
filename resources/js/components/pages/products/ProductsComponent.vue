@@ -42,9 +42,10 @@
                         ></router-link>
                         <router-link
                             :to="{
-                                name: '',
+                                name: 'admin.products.edit',
+                                params: { id: product.id },
                             }"
-                            class="btn btn-warning"
+                            class="btn btn-warning primary-btn-acction"
                             ><i class="fas fa-edit"></i
                         ></router-link>
                     </td>

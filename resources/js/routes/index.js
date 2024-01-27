@@ -14,6 +14,7 @@ import EditCategoryComponent from '../components/pages/categories/EditCategoryCo
 import ProductsComponent from '../components/pages/products/ProductsComponent.vue';
 import ProductDetailComponent from '../components/pages/products/ProductDetailComponent.vue';
 import AddProductComponent from '../components/pages/products/AddProductComponent.vue';
+import EditProductComponent from '../components/pages/products/EditProductComponent.vue';
 
 const routes = [
     {
@@ -55,15 +56,21 @@ const routes = [
         name: 'admin.products',
     },
     {
+        path: '/admin/products/create',
+        component: AddProductComponent,
+        name: 'admin.product.create',
+    },
+    {
         path: '/admin/products/:id/details',
         component: ProductDetailComponent,
         name: 'admin.product.datail',
         props: true,
     },
     {
-        path: '/admin/products/create',
-        component: AddProductComponent,
-        name: 'admin.product.create',
+        path: '/admin/products/:id/edit',
+        component: EditProductComponent,
+        name: 'admin.products.edit',
+        props: true,
     },
 ];
 

@@ -43,7 +43,7 @@ export default {
             }),
         },
         updating: {
-            require: false,
+            required: false,
             type: Boolean,
             default: false,
         },
@@ -71,7 +71,6 @@ export default {
 
                 // Verifica se a resposta da API possui um status 422
                 if (error.response && error.response.status === 422) {
-
                     // Verifica se a resposta contém detalhes específicos de erros de validação.
                     if (error.response.data && error.response.data.errors) {
                         // Extrai os erros de validação da resposta da API.
@@ -80,7 +79,7 @@ export default {
                         // Formata os erros em uma string, unindo-os com uma vírgula.
                         const formattedErrors = Object.values(validationErrors)
                             .flat()
-                            .join(', ');
+                            .join(", ");
 
                         // Atualiza a mensagem de erro para incluir os detalhes dos erros de validação.
                         msgError = `${formattedErrors}`;

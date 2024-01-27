@@ -32,12 +32,28 @@ export default {
         context.commit('CHANGE_PRELOADER', true);
 
         try {
-            const response = await axios.post(`${URL_BASE}${RESOURCE}/create`, params);
+            const response = await axios.post(`${URL_BASE}${RESOURCE}/create`, params.data);
             context.commit('CHANGE_PRELOADER', false);
             return response.data;
         } catch (error) {
             context.commit('CHANGE_PRELOADER', false);
             throw error;
         }
-    }
+    },
+    async updateProduct(context, params) {
+        context.commit('CHANGE_PRELOADER', true);
+
+        try {
+            const response = await axios.post(`${URL_BASE}${RESOURCE}/${params.productId}/update`, params.data, {
+                headers: {
+                    'X-HTTP-Method-Override': 'PUT'
+                }
+            });
+            context.commit('CHANGE_PRELOADER', false);
+            return response.data;
+        } catch (error) {
+            context.commit('CHANGE_PRELOADER', false);
+            throw error;
+        }
+    },
 }

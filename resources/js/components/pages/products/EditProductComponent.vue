@@ -1,14 +1,14 @@
 <template>
     <div class="container">
-        <h1>Editar Categoria</h1>
+        <h1>Editar Produto</h1>
 
-        <FormCategoryComponent :category="category.data" :updating="true" />
+        <FormProductComponent :product="product.data" :updating="true" />
     </div>
 </template>
 
 <script>
 import { useStore } from "vuex";
-import FormCategoryComponent from "./partials/FormCategoryComponent.vue";
+import FormProductComponent from "./partials/FormProductComponent.vue";
 
 export default {
     props: {
@@ -17,14 +17,17 @@ export default {
         },
     },
     components: {
-        FormCategoryComponent,
+        FormProductComponent,
     },
     data() {
         return {
-            category: {
+            product: {
                 data: {
                     name: "",
+                    price: null,
                     description: "",
+                    category_id: "",
+                    image: null,
                 },
             },
         };
@@ -33,9 +36,13 @@ export default {
         const store = useStore();
 
         store
-            .dispatch("loadCategory", this.id)
+            .dispatch("loadProduct", this.id)
             .then((response) => {
-                this.category = response;
+                response.data.price = parseFloat(
+                    response.data.price.replace("R$", "").replace(",", "")
+                );
+
+                this.product.data = response.data;
             })
             .catch((error) => {
                 console.log(error);
@@ -43,5 +50,3 @@ export default {
     },
 };
 </script>
-
-<style scoped></style>

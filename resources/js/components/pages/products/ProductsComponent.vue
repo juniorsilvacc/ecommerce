@@ -48,6 +48,13 @@
                             class="btn btn-warning primary-btn-acction"
                             ><i class="fas fa-edit"></i
                         ></router-link>
+                        <a
+                            href=""
+                            class="btn btn-danger"
+                            @click.prevent="confirmDestroy(product)"
+                        >
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
                     </td>
                 </tr>
             </tbody>
@@ -77,6 +84,7 @@
 </template>
 
 <script>
+import { notify } from "@kyvg/vue3-notification";
 import SearchProductComponent from "./partials/SearchProductComponent.vue";
 
 export default {
@@ -98,6 +106,31 @@ export default {
         },
     },
     methods: {
+        confirmDestroy(product) {
+            if (
+                window.confirm(
+                    `Tem certeza de que deseja excluir o produto: ${product.name}?`
+                )
+            ) {
+                this.destroy(product);
+            }
+        },
+        destroy(product) {
+            this.$store
+                .dispatch("destroyProduct", product.id)
+                .then(() => {
+                    notify({
+                        title: `Sucesso ao deletar o produto: ${product.name}`,
+                        type: "success",
+                    });
+                })
+                .catch((error) => {
+                    notify({
+                        title: "Error ao deletar produto",
+                        type: "error",
+                    });
+                });
+        },
         search(filter) {
             this.$store.dispatch("loadProducts", { name: filter, page: 1 });
         },

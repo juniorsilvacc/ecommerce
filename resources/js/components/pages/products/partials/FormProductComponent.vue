@@ -123,16 +123,19 @@ export default {
                 if (this.updating) {
                     await this.createOrUpdateProduct(
                         "updateProduct",
-                        "Produto Atualizado Com Sucesso"
+                        "Produto atualizado com sucesso",
+                        this.$router.push({ name: "admin.products" })
                     );
                 } else {
                     await this.createOrUpdateProduct(
                         "storeProduct",
-                        "Produto Adicionado Com Sucesso"
+                        "Produto adicionado com sucesso"
                     );
                 }
             } catch (error) {
                 this.handleErrors(error);
+            } finally {
+                this.isSubmitting = false;
             }
         },
         async createOrUpdateProduct(action, successMessage) {
@@ -173,31 +176,30 @@ export default {
             }
         },
         handleErrors(error) {
-            let messageError = "Falha na Requisição";
+            let msgError = "Falha na requisição";
 
             if (error.response && error.response.status === 422) {
-                const validationErrors = error.response.data.errors;
-                this.errorMessages = Object.entries(validationErrors).map(
-                    ([field, messages]) => `${field}: ${messages.join(", ")}`
-                );
-            } else {
-                this.errorMessages = [
-                    "Erro desconhecido ao processar a solicitação.",
-                ];
+                if (error.response.data && error.response.data.errors) {
+                    const validationErrors = error.response.data.errors;
+
+                    const formattedErrors = Object.values(validationErrors)
+                        .flat()
+                        .join(", ");
+
+                    msgError = `${formattedErrors}`;
+                }
+            } else if (error.response && error.response.status === 404) {
+                msgError = "Produto não encontrada";
+                this.$router.push({ name: "admin.products" })
             }
 
             notify({
-                title: "Falha ao Processar Produto",
-                text: messageError,
+                title: "Falha ao processar produto",
+                text: msgError,
                 type: "error",
             });
         },
         handleImageUpload(event) {
-            // const file = event.target.files[0];
-
-            // if (file) {
-            //     this.product.image = file;
-            // }
             const files = event.target.files;
 
             if (files.length > 0) {

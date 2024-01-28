@@ -72,6 +72,11 @@ const routes = [
         name: 'admin.products.edit',
         props: true,
     },
+    {
+        path: '/admin/categories/:id/delete',
+        name: 'admin.products.delete',
+        props: true,
+    },
 ];
 
 const router = createRouter({

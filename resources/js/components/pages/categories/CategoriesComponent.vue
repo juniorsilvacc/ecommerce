@@ -77,7 +77,7 @@ export default {
         confirmDestroy(category) {
             if (
                 window.confirm(
-                    `Tem certeza de que deseja destruir a categoria ${category.name}?`
+                    `Tem certeza de que deseja excluir a categoria: ${category.name}?`
                 )
             ) {
                 this.destroy(category);
@@ -89,7 +89,7 @@ export default {
                 .dispatch("destroyCategory", category.id)
                 .then(() => {
                     notify({
-                        title: `Sucesso ao deletar a categoria ${category.name}`,
+                        title: `Sucesso ao deletar a categoria: ${category.name}`,
                         type: "success",
                     });
                 })

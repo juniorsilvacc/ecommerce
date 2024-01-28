@@ -56,4 +56,17 @@ export default {
             throw error;
         }
     },
+    async destroyProduct (context, productId) {
+        context.commit('CHANGE_PRELOADER', true);
+
+        try {
+            const response = await axios.delete(`${URL_BASE}${RESOURCE}/${productId}/delete`);
+            context.commit('CHANGE_PRELOADER', false);
+            context.dispatch('loadProducts');
+            return response.data;
+        } catch (error) {
+            context.commit('CHANGE_PRELOADER', false);
+            throw error;
+        }
+    }
 }

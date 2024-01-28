@@ -42,6 +42,9 @@ export default {
                     response.data.price.replace("R$", "").replace(",", "")
                 );
 
+                // Configuração inicial (opcional)
+                response.data.image = null;
+
                 this.product.data = response.data;
             })
             .catch((error) => {

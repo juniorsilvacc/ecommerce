@@ -46,7 +46,7 @@
                     name="category_id"
                     required
                 >
-                    <option value="">Selecione a Categoria</option>
+                    <option :value="null">Selecione a Categoria</option>
                     <option
                         v-for="category in categories"
                         :key="category.id"
@@ -64,7 +64,6 @@
                     class="form-control"
                     id="image"
                     @change="handleImageUpload"
-                    required
                 />
             </div>
 
@@ -107,7 +106,7 @@ export default {
             isSubmitting: false,
         };
     },
-    mounted() {
+    beforeMount() {
         this.loadCategories();
     },
     methods: {
@@ -118,14 +117,19 @@ export default {
         },
         async onSubmit() {
             try {
-
                 this.isSubmitting = true;
                 this.errorMessages = [];
 
                 if (this.updating) {
-                    await this.createOrUpdateProduct('updateProduct', 'Produto Atualizado Com Sucesso');
+                    await this.createOrUpdateProduct(
+                        "updateProduct",
+                        "Produto Atualizado Com Sucesso"
+                    );
                 } else {
-                    await this.createOrUpdateProduct('storeProduct', 'Produto Adicionado Com Sucesso');
+                    await this.createOrUpdateProduct(
+                        "storeProduct",
+                        "Produto Adicionado Com Sucesso"
+                    );
                 }
             } catch (error) {
                 this.handleErrors(error);
@@ -149,14 +153,15 @@ export default {
                 }
 
                 // Adicione a imagem se houver
-                if (this.product.image) {
+                if (this.product.image !== null) {
                     formData.append("image", this.product.image);
                 }
 
-                console.log("FormData:", formData);
-
                 // Despache a ação
-                await this.$store.dispatch(action, { productId: this.product.id, data: formData });
+                await this.$store.dispatch(action, {
+                    productId: this.product.id,
+                    data: formData,
+                });
 
                 notify({
                     title: "Produto",
@@ -172,10 +177,13 @@ export default {
 
             if (error.response && error.response.status === 422) {
                 const validationErrors = error.response.data.errors;
-                this.errorMessages = Object.entries(validationErrors)
-                    .map(([field, messages]) => `${field}: ${messages.join(", ")}`);
+                this.errorMessages = Object.entries(validationErrors).map(
+                    ([field, messages]) => `${field}: ${messages.join(", ")}`
+                );
             } else {
-                this.errorMessages = ["Erro desconhecido ao processar a solicitação."];
+                this.errorMessages = [
+                    "Erro desconhecido ao processar a solicitação.",
+                ];
             }
 
             notify({
@@ -185,10 +193,17 @@ export default {
             });
         },
         handleImageUpload(event) {
-            const file = event.target.files[0];
+            // const file = event.target.files[0];
 
-            if (file) {
-                this.product.image = file;
+            // if (file) {
+            //     this.product.image = file;
+            // }
+            const files = event.target.files;
+
+            if (files.length > 0) {
+                this.product.image = files[0];
+            } else {
+                this.product.image = null;
             }
         },
     },

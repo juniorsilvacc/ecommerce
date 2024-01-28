@@ -21,7 +21,7 @@ class StoreUpdateProduct extends FormRequest
      */
     public function rules(): array
     {
-        $rules = [
+        return [
             'name' => [
                 'required',
                 'min:3',
@@ -42,17 +42,11 @@ class StoreUpdateProduct extends FormRequest
                 'exists:categories,id',
             ],
             'image' => [
-                'required',
+                $this->isMethod('PUT') ? 'nullable' : 'required',
                 'image',
                 'max:1024',
                 'mimes:png,jpg',
             ],
         ];
-
-        if ($this->method() == 'PUT') {
-            $rules['image'] = ['nullable', 'image', 'max:1024', 'mimes:png,jpg'];
-        }
-
-        return $rules;
     }
 }

@@ -17,18 +17,22 @@
             </div>
         </div>
 
-        <table class="table table-dark">
+        <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Imagem</th>
                     <th>Nome</th>
-                    <th>Price</th>
+                    <th>Preço</th>
                     <th width="100">Ações</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(product, index) in products.data" :key="index">
-                    <td>{{ product.id }}</td>
+                    <td >{{ product.id }}</td>
+                    <td class="img-product">
+                        <img :src="'/storage/products/' + product.image" alt="Imagem do Produto">
+                    </td>
                     <td>{{ product.name }}</td>
                     <td>{{ product.price }}</td>
                     <td class="acctions">
@@ -151,4 +155,10 @@ export default {
 
 <style scoped>
 
+.img-product img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
 </style>

@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import Admin from '../views/admin/Admin.vue';
+// Site
+import SiteComponent from '../components/SiteComponent.vue';
+import SiteContactComponent from '../components/pages/contact/SiteContactComponent.vue';
+import SiteHomeComponent from '../components/pages/home/SiteHomeComponent.vue';
+
 
 // Dashboard
 import DashboardComponent from '../components/pages/dashboard/DashboardComponent.vue';
@@ -19,7 +23,24 @@ import EditProductComponent from '../components/pages/products/EditProductCompon
 const routes = [
     {
         path: '/',
-        component: Admin,
+        component: SiteComponent,
+        children: [
+            {
+                path: '/home',
+                component: SiteHomeComponent,
+                name: 'home',
+
+            },
+            {
+                path: '/contact',
+                component: SiteContactComponent,
+                name: 'contact',
+
+            },
+        ],
+        meta: {
+            showHeader: false,
+        },
     },
 
     {

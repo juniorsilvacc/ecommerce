@@ -17,7 +17,7 @@
             </div>
         </div>
 
-        <table class="table table-dark">
+        <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>

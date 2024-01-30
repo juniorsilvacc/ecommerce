@@ -29,9 +29,12 @@
             </thead>
             <tbody>
                 <tr v-for="(product, index) in products.data" :key="index">
-                    <td >{{ product.id }}</td>
+                    <td>{{ product.id }}</td>
                     <td class="img-product">
-                        <img :src="'/storage/products/' + product.image" alt="Imagem do Produto">
+                        <img
+                            :src="'/storage/products/' + product.image"
+                            alt="Imagem do Produto"
+                        />
                     </td>
                     <td>{{ product.name }}</td>
                     <td>{{ product.price }}</td>
@@ -65,35 +68,23 @@
         </table>
 
         <!-- Paginação -->
-        <div class="pagination">
-            <nav aria-label="Navegação de página">
-                <ul class="pagination">
-                    <li class="page-item" :class="{ disabled: products.meta.current_page === 1 }">
-                        <a class="page-link" @click="paginate(products.meta.current_page - 1)" href="#" aria-label="Anterior">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li>
-                        <span class="page-link" v-if="products.meta.current_page">{{ products.meta.current_page }}</span>
-                    </li>
-                    <li class="page-item" :class="{ disabled: products.meta.current_page === products.meta.last_page }">
-                        <a class="page-link" @click="paginate(products.meta.current_page + 1)" href="#" aria-label="Próxima">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+        <PaginationComponent
+            :currentPage="currentPage"
+            :lastPage="products.meta.last_page"
+            :changePage="paginate"
+        />
     </div>
 </template>
 
 <script>
 import { notify } from "@kyvg/vue3-notification";
 import SearchProductComponent from "./partials/SearchProductComponent.vue";
+import PaginationComponent from "../../common/PaginationComponent.vue";
 
 export default {
     components: {
         SearchProductComponent,
+        PaginationComponent,
     },
     data() {
         return {
@@ -139,22 +130,17 @@ export default {
             this.$store.dispatch("loadProducts", { name: filter, page: 1 });
         },
         paginate(page) {
-            // Verifica se o número da página está fora dos limites válidos, Retorna se for válido
-            if (page < 1 || page > this.products.meta.last_page) {
-                return;
-            }
             // Atualiza a variável de estado da página atual no componente
             this.currentPage = page;
 
             // Dispara a ação para carregar os produtos da página selecionada
             this.$store.dispatch("loadProducts", { name: this.name, page });
-        }
+        },
     },
 };
 </script>
 
 <style scoped>
-
 .img-product img {
     width: 40px;
     height: 40px;

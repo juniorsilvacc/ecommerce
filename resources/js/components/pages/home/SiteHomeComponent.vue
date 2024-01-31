@@ -1,33 +1,44 @@
 <template>
-    <div>
-        <div class="container">
-            <h1>Produtos</h1>
+    <div class="container">
+        <h1 class="mt-5 mb-4 title">Produtos</h1>
 
-            <div class="row">
-                <div
-                    class="col-3"
-                    v-for="product in products.data"
-                    :key="product.id"
-                >
-                    <td class="img-product">
+        <div class="row">
+            <router-link
+                :to="{
+                    name: 'site.product.detail',
+                    params: { id: product.id },
+                }"
+                v-for="product in products.data"
+                :key="product.id"
+                class="col-md-4 mb-4"
+            >
+                <div class="card">
+                    <div class="card-img-container">
                         <img
                             :src="getImageUrl(product.image)"
-                            :alt="product.name"
+                            :alt="`Imagem de ${product.name}`"
+                            class="card-img-top img-product"
                         />
-                    </td>
-                    {{ product.name }}
-                    {{ product.price }}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title custom-title">
+                            {{ product.name }}
+                        </h5>
+                        <p class="card-text custom-price">
+                            {{ product.price }}
+                        </p>
+                    </div>
                 </div>
-            </div>
+            </router-link>
+        </div>
 
-            <!-- Paginação -->
+        <!-- Paginação -->
         <PaginationComponent
             v-if="products && products.meta"
             :currentPage="currentPage"
             :lastPage="products.meta.last_page"
             :changePage="paginate"
         />
-        </div>
     </div>
 </template>
 
@@ -36,39 +47,31 @@ import PaginationComponent from "../../common/PaginationComponent.vue";
 
 export default {
     components: {
-        PaginationComponent
+        PaginationComponent,
     },
     data() {
         return {
             currentPage: 1,
         };
     },
-    // O hook "created" é chamado quando o componente é criado
     created() {
-        if (this.products.data.length == 0) {
+        if (this.products.data.length === 0) {
             this.$store.dispatch("loadProducts", {});
         }
     },
-    // A propriedade computada "products" retorna a lista de produtos do estado global
     computed: {
         products() {
             return this.$store.state.products.items;
         },
     },
     methods: {
-        // Método para obter a URL da imagem ou a imagem padrão se não existir
         getImageUrl(image) {
-            if (image) {
-                return "/storage/products/" + image;
-            } else {
-                return "/public/img/default.jpg";
-            }
+            return image
+                ? `/storage/products/${image}`
+                : "/public/img/default.jpg";
         },
         paginate(page) {
-            // Atualiza a variável de estado da página atual no componente
             this.currentPage = page;
-
-            // Dispara a ação para carregar os produtos da página selecionada
             this.$store.dispatch("loadProducts", { name: this.name, page });
         },
     },
@@ -76,10 +79,50 @@ export default {
 </script>
 
 <style scoped>
-.img-product img {
-    width: 200px;
+.title {
+    text-align: center;
+    margin-bottom: 50px !important;
+}
+
+.img-product {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.card {
+    transition: transform 0.3s;
+    width: 18rem;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-img-container {
     height: 200px;
-    border-radius: 50%;
-    object-fit: cover;
+    overflow: hidden;
+}
+
+.custom-title {
+    margin-top: 10px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.custom-price {
+    color: #e44d26;
+}
+
+.card:hover {
+    transform: scale(1.05);
 }
 </style>

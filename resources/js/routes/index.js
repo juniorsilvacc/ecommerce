@@ -4,7 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import SiteComponent from '../components/SiteComponent.vue';
 import SiteContactComponent from '../components/pages/contact/SiteContactComponent.vue';
 import SiteHomeComponent from '../components/pages/home/SiteHomeComponent.vue';
-
+import SiteProductDetailComponent from '../components/pages/home/partials/SiteProductDetailComponent.vue';
 
 // Dashboard
 import DashboardComponent from '../components/pages/dashboard/DashboardComponent.vue';
@@ -25,6 +25,12 @@ const routes = [
         path: '/',
         component: SiteComponent,
         children: [
+            {
+                path: 'product/:id',
+                component: SiteProductDetailComponent,
+                name: 'site.product.detail',
+                props: true
+            },
             {
                 path: '/home',
                 component: SiteHomeComponent,

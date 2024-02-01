@@ -2,6 +2,10 @@
     <div class="container">
         <h1 class="mt-5 mb-4 title">Produtos</h1>
 
+        <div class="col-8">
+            <SearchProductComponent @searchProduct="search" />
+        </div>
+
         <div class="row">
             <router-link
                 :to="{
@@ -33,30 +37,37 @@
         </div>
 
         <!-- Paginação -->
-        <PaginationComponent
-            v-if="products && products.meta"
-            :currentPage="currentPage"
-            :lastPage="products.meta.last_page"
-            :changePage="paginate"
-        />
+        <div class="col-md-6 mb-4">
+            <div class="paginate">
+                <PaginationComponent
+                    v-if="products && products.meta"
+                    :currentPage="currentPage"
+                    :lastPage="products.meta.last_page"
+                    :changePage="paginate"
+                />
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
+import SearchProductComponent from "../../pages/home/partials/SiteSearchProductComponent.vue";
 import PaginationComponent from "../../common/PaginationComponent.vue";
 
 export default {
     components: {
+        SearchProductComponent,
         PaginationComponent,
     },
     data() {
         return {
+            name: "",
             currentPage: 1,
         };
     },
     created() {
         if (this.products.data.length === 0) {
-            this.$store.dispatch("loadProducts", {});
+            this.$store.dispatch("loadProducts", { name: this.name });
         }
     },
     computed: {
@@ -69,6 +80,13 @@ export default {
             return image
                 ? `/storage/products/${image}`
                 : "/public/img/default.jpg";
+        },
+        search({ filter, category_id }) {
+            this.$store.dispatch("loadProducts", {
+                name: filter,
+                category_id,
+                page: 1,
+            });
         },
         paginate(page) {
             this.currentPage = page;
@@ -91,14 +109,12 @@ export default {
 }
 
 .card {
-    transition: transform 0.3s;
-    width: 18rem;
-    margin-bottom: 20px;
+    text-align: center;
     border: 1px solid #ddd;
     border-radius: 8px;
+    margin-bottom: 20px;
     overflow: hidden;
-    margin: 0 auto;
-    text-align: center;
+    transition: transform 0.3s;
 }
 
 .card-body {

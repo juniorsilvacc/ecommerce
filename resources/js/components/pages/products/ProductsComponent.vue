@@ -78,7 +78,7 @@
 
 <script>
 import { notify } from "@kyvg/vue3-notification";
-import SearchProductComponent from "./partials/SearchProductComponent.vue";
+import SearchProductComponent from "../../common/SearchProductComponent.vue";
 import PaginationComponent from "../../common/PaginationComponent.vue";
 
 export default {

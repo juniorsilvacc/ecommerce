@@ -25,8 +25,9 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $name = $request->input('name');
+        $category_id = $request->input('category_id');
 
-        $products = $this->service->getAllProducts($name);
+        $products = $this->service->getAllProducts($name, $category_id);
 
         return ProductResource::collection($products);
     }
